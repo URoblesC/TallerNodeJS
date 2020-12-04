@@ -24,8 +24,8 @@ employee.patch("/modificar", async (req, res, next) => {
     const { empleado_id, empleado_nombre, empleado_apellidos, empleado_telefono, empleado_correo, empleado_direccion } = req.body;
 
     if (empleado_id && empleado_nombre && empleado_apellidos && empleado_telefono && empleado_correo && empleado_direccion) {
-        let query = `UPDATE empleados SET empleado_nombre='${empleado_nombre}', empleado_apellidos=${empleado_apellidos},`;
-        query += `empleado_telefono=${empleado_telefono}, empleado_correo=${empleado_correo}, empleado_direccion=${empleado_direccion} WHERE empleado_id=${empleado_id}`;
+        let query = `UPDATE empleados SET empleado_nombre='${empleado_nombre}', empleado_apellidos='${empleado_apellidos}',`;
+        query += `empleado_telefono='${empleado_telefono}', empleado_correo='${empleado_correo}', empleado_direccion='${empleado_direccion}' WHERE empleado_id=${empleado_id}`;
 
         const rows = await db.query(query);
 
@@ -54,12 +54,13 @@ employee.delete("/eliminar", async (req, res, next) => {
 
 employee.get("/buscar", async (req, res, next) => {
     const { empleado_nombre } = req.body;
-
+    console.log("buscar");
     if (empleado_nombre) {
-        const query = `SELECT * FROM empleados WHERE empleado_nombre='${empleado_nombre}'`;
+        const query = ` SELECT * FROM empleados WHERE empleado_nombre='${empleado_nombre}';`;
+        console.log(query);
         const rows = await db.query(query);
 
-        if (rows.affectedRows == 1) {
+        if (rows.length > 0) {
             return res.status(200).json({ code: 200, message: "Empleado encontrado" });
         }
         return res.status(200).json({ code: 500, message: "Ocurrió un error" });

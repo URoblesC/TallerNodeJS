@@ -9,7 +9,7 @@ function init(){
         document.querySelector('.btn-primary').addEventListener('click', login);
     }
     else{
-        window.location.href = "employees.html";
+        window.location.href = "index.html";
     }
 }
 

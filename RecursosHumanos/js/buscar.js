@@ -1,18 +1,11 @@
 window.onload = init;
-var headers = {};
+
 function init(){
 
-
-        
+    document.querySelector('.buscar').addEventListener('click', buscar);
     if(localStorage.getItem("token")){
 
-        token = localStorage.getItem("token");
-        headers = {
-            headers: {
-                'Authorization': "bearer " + localStorage.getItem("token")
-            }
-        }
-
+    
         document.querySelector('.agregar').addEventListener('click', function() {
             window.location.href = "agregarempleado.html"
         });
@@ -23,10 +16,7 @@ function init(){
 
         document.querySelector('.eliminar').addEventListener('click', function() {
             window.location.href = "eliminarempleado.html"
-        });
-
-        document.querySelector('.buscar').addEventListener('click', buscar);
-        
+        });   
     }
     else{
         window.location.href = "index.html";
@@ -39,10 +29,18 @@ function buscar(){
 
     console.log("nombre",buscarnombre);
 
-    axios.get("http://localhost:3000/user/employee/buscar", headers)
-    .then(function(res){
+    axios({
+        method: 'get',
+        url: 'http://localhost:3000/user/employee/buscar',
+        data: {
+            empleado_nombre : buscarnombre
+        }, 
+        headers: {
+            'Authorization': "bearer " + localStorage.getItem("token")
+        }
+    }).then(function(res){
         console.log(res);
-        displayPokemon(res.data.message);
+        displayempleados(res.data.message);
     }).catch(function(err){
         console.log(err);
     })
